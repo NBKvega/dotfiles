@@ -1,9 +1,12 @@
-# ~/.zprofile
-export PATH="$HOME/.local/bin:$PATH"
+# ~/.zprofile (Login-Shell)
+# Keep login-time PATH/ENV here. Interactive customisations belong in ~/.zshrc.
 
-# Rust (rustup) - user scoped
-if [ -f "$HOME/.cargo/env" ]; then
-  source "$HOME/.cargo/env"
-else
+# Rust (rustup) - per user
+if [ -d "$HOME/.cargo/bin" ]; then
   export PATH="$HOME/.cargo/bin:$PATH"
+fi
+
+# Ensure ~/.local/bin is available for user-installed tools (Linux)
+if [ -d "$HOME/.local/bin" ]; then
+  export PATH="$HOME/.local/bin:$PATH"
 fi

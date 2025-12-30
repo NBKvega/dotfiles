@@ -1,16 +1,15 @@
-# ~/.zshrc
+# ~/.zshrc (interactive)
+export EDITOR=hx
 
-# ===== PATH =====
-# Keep user-local bins first
-export PATH="$HOME/.local/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-
-# ===== Editor =====
-if command -v hx >/dev/null 2>&1; then
-  export EDITOR=hx
+# If Ghostty sets TERM=xterm-ghostty but the server has no terminfo entry,
+# fallback to xterm-256color to avoid remote warnings/broken UI.
+if [ "${TERM:-}" = "xterm-ghostty" ] && command -v infocmp >/dev/null 2>&1; then
+  if ! infocmp xterm-ghostty >/dev/null 2>&1; then
+    export TERM=xterm-256color
+  fi
 fi
 
-# ===== Modernes ls: eza =====
+# ---- modern ls (eza) -------------------------------------------------
 if command -v eza >/dev/null 2>&1; then
   alias ls='eza --color=always --icons'
   alias ll='eza -l --color=always --icons'
@@ -18,47 +17,42 @@ if command -v eza >/dev/null 2>&1; then
   alias lt='eza -T --color=always --icons'
 fi
 
-# ===== Starship Prompt =====
-# Only if starship exists and we have a real terminal
-if command -v starship >/dev/null 2>&1 && [[ "${TERM:-}" != "dumb" ]]; then
+# ---- zoxide ----------------------------------------------------------
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
+# ---- starship prompt -------------------------------------------------
+if [[ "${TERM:-dumb}" != "dumb" ]] && command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
 fi
 
-# ===== History Settings =====
-HISTSIZE=10000
-SAVEHIST=10000
-HISTFILE="$HOME/.zsh_history"
-setopt HIST_IGNORE_DUPS
-setopt SHARE_HISTORY
-
-# ===== Helix runtime =====
-# Only set if helix config dir exists (optional)
-if [ -d "$HOME/.config/helix" ]; then
-  export HELIX_RUNTIME="$HOME/.config/helix/runtime"
-fi
-
-# ===== Autosuggestions =====
-# Debian apt path
+# ---- zsh plugins (load if present) ----------------------------------
+# Debian/RaspiOS apt locations
 if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
   source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 fi
-# Homebrew path (macOS)
-if command -v brew >/dev/null 2>&1; then
-  BREW_PREFIX="$(brew --prefix 2>/dev/null)"
-  if [ -f "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
-    source "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-  fi
-fi
 
-# ===== Syntax Highlighting (immer am Ende!) =====
-# Debian apt path
+# Syntax highlighting should be loaded last.
 if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
   source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
-# Homebrew path (macOS)
+
+# Homebrew locations (macOS)
 if command -v brew >/dev/null 2>&1; then
   BREW_PREFIX="$(brew --prefix 2>/dev/null)"
+
+  if [ -f "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  fi
+
   if [ -f "${BREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
     source "${BREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
   fi
 fi
+
+# ---- history ---------------------------------------------------------
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE="$HOME/.zsh_history"
+setopt HIST_IGNORE_DUPS SHARE_HISTORY

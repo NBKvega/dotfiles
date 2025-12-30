@@ -1,68 +1,56 @@
-[tools.rust]
-channel = "stable"
-version = "1.92.0"
-install = "rustup"
+# Single source of truth for versions used by curl-based installs.
+# Keep these aligned across Debian/RaspiOS and macOS.
+[versions]
+rust_toolchain = "1.92.0"        # Rust stable (2025-12-11)
+starship = "1.24.0"
+helix = "25.07.1"
+zellij = "0.43.1"
+typst = "0.14.2"
+nerd_fonts = "v3.4.0"            # Nerd Fonts release tag (used for MesloLGS NF)
 
-[tools.helix]
-version = "25.07.1"
-install = "binary"
-
-[tools.zellij]
-version = "0.43.1"
-install = "binary"
-
-[tools.starship]
-version = "1.24.1"
-install = "binary"
-
-[tools.typst]
-version = "0.14.2"
-install = "binary"
-
-# Base packages via OS package manager
 [packages.debian]
+# System packages (apt). Keep this list minimal and broadly available on Debian 12 (bookworm).
 apt = [
-  "zsh",
-  "curl",
   "ca-certificates",
+  "curl",
   "git",
-  "rsync",
+  "zsh",
   "wget",
+  "rsync",
   "nmap",
-  "tree",
   "btop",
+  "tree",
   "eza",
   "zoxide",
   "llvm",
-  "unzip",
-  "xz-utils",
-  "neofetch",
-  "magic-wormhole",
+  "ncurses-bin",
   "zsh-autosuggestions",
-  "zsh-syntax-highlighting"
+  "zsh-syntax-highlighting",
+  "wormhole-william",
 ]
 
 [packages.macos]
 brew = [
-  "zsh",
-  "curl",
   "git",
-  "rsync",
+  "zsh",
   "wget",
+  "rsync",
   "nmap",
-  "tree",
   "btop",
   "eza",
   "zoxide",
   "llvm",
-  "fastfetch",
+  "starship",
+  "zellij",
+  "helix",
+  "typst",
   "magic-wormhole",
   "zsh-autosuggestions",
-  "zsh-syntax-highlighting"
+  "zsh-syntax-highlighting",
 ]
 casks = [
-  "ghostty",
-  "zed",
   "font-iosevka",
-  "font-meslo-lg-nerd-font"
+  "font-meslo-lg-nerd-font",
+   "ghostty",
+   "zed",
 ]

@@ -1,10 +1,27 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-if command -v zsh >/dev/null 2>&1 && command -v chsh >/dev/null 2>&1; then
-  ZSH_PATH="$(command -v zsh)"
-  if [ "${SHELL:-}" != "$ZSH_PATH" ]; then
-    # May prompt for password depending on system config
-    chsh -s "$ZSH_PATH" || true
-  fi
+# Set zsh as login shell (per-user). This may require an interactive password prompt.
+
+ZSH_PATH="$(command -v zsh || true)"
+if [[ -z "$ZSH_PATH" ]]; then
+  echo "ERROR: zsh not found."
+  exit 1
+fi
+
+CURRENT_SHELL="$(getent passwd "$USER" | cut -d: -f7 || true)"
+
+if [[ "$CURRENT_SHELL" == "$ZSH_PATH" ]]; then
+  echo "Login shell already set to zsh: $ZSH_PATH"
+  exit 0
+fi
+
+echo "Setting login shell for user '$USER' to: $ZSH_PATH"
+
+# Try non-interactive sudo first (best for automation).
+if command -v sudo >/dev/null 2>&1 && sudo -n true 2>/dev/null; then
+  sudo chsh -s "$ZSH_PATH" "$USER"
+else
+  # Fallback to interactive chsh (may prompt for the user's password).
+  chsh -s "$ZSH_PATH"
 fi

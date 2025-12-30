@@ -1,25 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-RUST_VERSION="{{ (index . "tools" "rust" "version") }}"
+# Installs rustup + pins the Rust toolchain version from versions.toml (per-user).
 
-# Install rustup (user scope) if missing
-if ! command -v rustup >/dev/null 2>&1; then
-  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
-    | sh -s -- -y --profile minimal
+VERSIONS_FILE="{{ .chezmoi.sourceDir }}/versions.toml"
+RUST_TOOLCHAIN="$(awk -F'"' '/^rust_toolchain/ {print $2}' "$VERSIONS_FILE")"
+
+if command -v rustup >/dev/null 2>&1; then
+  echo "rustup already installed."
+else
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
 fi
 
-# Activate rustup env for this script run
-if [ -f "$HOME/.cargo/env" ]; then
-  # shellcheck disable=SC1090
-  source "$HOME/.cargo/env"
-fi
+# Make rustup/cargo available in this script run.
+# (The user's zprofile will handle it for future shells.)
 export PATH="$HOME/.cargo/bin:$PATH"
 
-# Pin toolchain
-rustup toolchain install "$RUST_VERSION"
-rustup default "$RUST_VERSION"
-
-# Sanity check
-rustc --version
-cargo --version
+rustup toolchain install "$RUST_TOOLCHAIN"
+rustup default "$RUST_TOOLCHAIN"
+rustup component add clippy rustfmt

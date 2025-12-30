@@ -1,36 +1,39 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-OS="{{ .chezmoi.os }}"
+# Base prerequisites shared by all subsequent scripts.
 
-if [ "$OS" = "linux" ]; then
-  # Debian/RaspiOS base packages
+OS="$(uname -s)"
+
+if [[ "$OS" == "Linux" ]]; then
   if command -v apt-get >/dev/null 2>&1; then
-    sudo apt-get update -y
-    sudo apt-get install -y {{- range $i, $p := (index . "packages" "debian" "apt") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
+    sudo apt-get update
+    sudo apt-get install -y --no-install-recommends \
+      ca-certificates curl git zsh wget rsync nmap btop tree eza zoxide llvm \
+      ncurses-bin zsh-autosuggestions zsh-syntax-highlighting wormhole-william
   else
-    echo "ERROR: apt-get not found; expected Debian/RaspiOS." >&2
+    echo "ERROR: apt-get not found. This script currently targets Debian/RaspiOS."
     exit 1
   fi
-elif [ "$OS" = "darwin" ]; then
-  # Homebrew install (if missing)
+
+elif [[ "$OS" == "Darwin" ]]; then
+  # Homebrew is the most reliable base package manager on macOS.
   if ! command -v brew >/dev/null 2>&1; then
+    echo "Homebrew not found. Installing..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    # Ensure brew is available in current shell session (Apple Silicon path)
-    if [ -x /opt/homebrew/bin/brew ]; then
-      eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [ -x /usr/local/bin/brew ]; then
-      eval "$(/usr/local/bin/brew shellenv)"
-    fi
+  fi
+
+  # Ensure brew is available in the current shell (both Intel and Apple Silicon).
+  if [[ -x /opt/homebrew/bin/brew ]]; then
+    eval "$(/opt/homebrew/bin/brew shellenv)"
+  elif [[ -x /usr/local/bin/brew ]]; then
+    eval "$(/usr/local/bin/brew shellenv)"
   fi
 
   brew update
-  brew install {{- range $i, $p := (index . "packages" "macos" "brew") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
-  brew install --cask {{- range $i, $p := (index . "packages" "macos" "casks") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
+  brew install git zsh curl
+
 else
-  echo "ERROR: Unsupported OS: $OS" >&2
+  echo "ERROR: Unsupported OS: $OS"
   exit 1
 fi
-
-# Ensure user-local bin exists
-mkdir -p "$HOME/.local/bin"
