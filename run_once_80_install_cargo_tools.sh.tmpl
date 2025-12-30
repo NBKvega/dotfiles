@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Ensure cargo is available for this run (first apply after rust install)
+if [ -f "$HOME/.cargo/env" ]; then
+  # shellcheck disable=SC1090
+  . "$HOME/.cargo/env"
+fi
+
+command -v cargo >/dev/null 2>&1 || { echo "cargo not found"; exit 1; }
+
+# Install eza via cargo (consistent version across hosts)
+if command -v eza >/dev/null 2>&1; then
+  echo "eza already installed: $(eza --version 2>/dev/null || true)"
+else
+  cargo install eza
+fi
