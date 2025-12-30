@@ -1,0 +1,2 @@
+# dotfiles
+chesmoi dotfiles
