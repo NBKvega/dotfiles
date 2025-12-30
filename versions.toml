@@ -20,7 +20,6 @@ apt = [
   "nmap",
   "btop",
   "tree",
-  "eza",
   "zoxide",
   "llvm",
   "ncurses-bin",
