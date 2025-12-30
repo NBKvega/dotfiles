@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if command -v zsh >/dev/null 2>&1 && command -v chsh >/dev/null 2>&1; then
+  ZSH_PATH="$(command -v zsh)"
+  if [ "${SHELL:-}" != "$ZSH_PATH" ]; then
+    # May prompt for password depending on system config
+    chsh -s "$ZSH_PATH" || true
+  fi
+fi

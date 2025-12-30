@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+RUST_VERSION="{{ (index . "tools" "rust" "version") }}"
+
+# Install rustup (user scope) if missing
+if ! command -v rustup >/dev/null 2>&1; then
+  curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs \
+    | sh -s -- -y --profile minimal
+fi
+
+# Activate rustup env for this script run
+if [ -f "$HOME/.cargo/env" ]; then
+  # shellcheck disable=SC1090
+  source "$HOME/.cargo/env"
+fi
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# Pin toolchain
+rustup toolchain install "$RUST_VERSION"
+rustup default "$RUST_VERSION"
+
+# Sanity check
+rustc --version
+cargo --version

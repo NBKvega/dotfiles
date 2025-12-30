@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+HELIX="{{ (index . "tools" "helix" "version") }}"
+ZELLIJ="{{ (index . "tools" "zellij" "version") }}"
+TYPST="{{ (index . "tools" "typst" "version") }}"
+STARSHIP="{{ (index . "tools" "starship" "version") }}"
+
+OS="$(uname -s)"
+ARCH="$(uname -m)"
+
+mkdir -p "$HOME/.local/bin"
+cd /tmp
+
+# Helpers
+dl() { curl -fsSL -o "$2" "$1"; }
+
+case "$OS" in
+  Linux)
+    case "$ARCH" in
+      aarch64|arm64) LINUX_ARCH="aarch64" ;;
+      x86_64|amd64)  LINUX_ARCH="x86_64" ;;
+      *) echo "Unsupported Linux arch: $ARCH" >&2; exit 1 ;;
+    esac
+    ;;
+  Darwin)
+    case "$ARCH" in
+      arm64) DARWIN_ARCH="arm64" ;;
+      x86_64) DARWIN_ARCH="x86_64" ;;
+      *) echo "Unsupported macOS arch: $ARCH" >&2; exit 1 ;;
+    esac
+    ;;
+  *)
+    echo "Unsupported OS: $OS" >&2
+    exit 1
+    ;;
+esac
+
+# ---- Helix -------------------------------------------------------
+if [ "$OS" = "Linux" ]; then
+  HX_ASSET="helix-${HELIX}-linux-${LINUX_ARCH}.tar.xz"
+elif [ "$OS" = "Darwin" ]; then
+  HX_ASSET="helix-${HELIX}-macos-${DARWIN_ARCH}.tar.xz"
+fi
+
+dl "https://github.com/helix-editor/helix/releases/download/${HELIX}/${HX_ASSET}" "helix.tar.xz"
+rm -rf "helix-${HELIX}" || true
+tar -xf helix.tar.xz
+cp "helix-${HELIX}-"*"/hx" "$HOME/.local/bin/hx"
+chmod +x "$HOME/.local/bin/hx"
+
+# ---- Zellij ------------------------------------------------------
+if [ "$OS" = "Linux" ]; then
+  ZJ_ASSET="zellij-linux-${LINUX_ARCH}.tar.gz"
+  dl "https://github.com/zellij-org/zellij/releases/download/v${ZELLIJ}/${ZJ_ASSET}" "zellij.tar.gz"
+  tar -xf zellij.tar.gz zellij
+  mv -f zellij "$HOME/.local/bin/zellij"
+elif [ "$OS" = "Darwin" ]; then
+  # Zellij release naming on macOS commonly includes "apple-darwin"
+  # We use arm64/x86_64 mapping to match typical assets.
+  ZJ_ASSET="zellij-${DARWIN_ARCH}-apple-darwin.tar.gz"
+  dl "https://github.com/zellij-org/zellij/releases/download/v${ZELLIJ}/${ZJ_ASSET}" "zellij.tar.gz"
+  tar -xf zellij.tar.gz zellij
+  mv -f zellij "$HOME/.local/bin/zellij"
+fi
+chmod +x "$HOME/.local/bin/zellij"
+
+# ---- Typst -------------------------------------------------------
+if [ "$OS" = "Linux" ]; then
+  TP_ASSET="typst-x86_64-unknown-linux-gnu.tar.xz"
+  [ "$LINUX_ARCH" = "aarch64" ] && TP_ASSET="typst-aarch64-unknown-linux-gnu.tar.xz"
+  dl "https://github.com/typst/typst/releases/download/v${TYPST}/${TP_ASSET}" "typst.tar.xz"
+  tar -xf typst.tar.xz
+  cp typst*/typst "$HOME/.local/bin/typst"
+elif [ "$OS" = "Darwin" ]; then
+  TP_ASSET="typst-x86_64-apple-darwin.tar.xz"
+  [ "$DARWIN_ARCH" = "arm64" ] && TP_ASSET="typst-aarch64-apple-darwin.tar.xz"
+  dl "https://github.com/typst/typst/releases/download/v${TYPST}/${TP_ASSET}" "typst.tar.xz"
+  tar -xf typst.tar.xz
+  cp typst*/typst "$HOME/.local/bin/typst"
+fi
+chmod +x "$HOME/.local/bin/typst"
+
+# ---- Starship ----------------------------------------------------
+if [ "$OS" = "Linux" ]; then
+  SS_ASSET="starship-${LINUX_ARCH}-unknown-linux-gnu.tar.gz"
+  dl "https://github.com/starship/starship/releases/download/v${STARSHIP}/${SS_ASSET}" "starship.tar.gz"
+  tar -xf starship.tar.gz starship
+  mv -f starship "$HOME/.local/bin/starship"
+elif [ "$OS" = "Darwin" ]; then
+  SS_ASSET="starship-${DARWIN_ARCH}-apple-darwin.tar.gz"
+  dl "https://github.com/starship/starship/releases/download/v${STARSHIP}/${SS_ASSET}" "starship.tar.gz"
+  tar -xf starship.tar.gz starship
+  mv -f starship "$HOME/.local/bin/starship"
+fi
+chmod +x "$HOME/.local/bin/starship"
+
+# ---- Verify ------------------------------------------------------
+"$HOME/.local/bin/hx" --version
+"$HOME/.local/bin/zellij" --version
+"$HOME/.local/bin/typst" --version
+"$HOME/.local/bin/starship" --version

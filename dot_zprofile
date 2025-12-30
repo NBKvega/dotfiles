@@ -1,0 +1,9 @@
+# ~/.zprofile
+export PATH="$HOME/.local/bin:$PATH"
+
+# Rust (rustup) - user scoped
+if [ -f "$HOME/.cargo/env" ]; then
+  source "$HOME/.cargo/env"
+else
+  export PATH="$HOME/.cargo/bin:$PATH"
+fi

@@ -1,0 +1,68 @@
+[tools.rust]
+channel = "stable"
+version = "1.92.0"
+install = "rustup"
+
+[tools.helix]
+version = "25.07.1"
+install = "binary"
+
+[tools.zellij]
+version = "0.43.1"
+install = "binary"
+
+[tools.starship]
+version = "1.24.1"
+install = "binary"
+
+[tools.typst]
+version = "0.14.2"
+install = "binary"
+
+# Base packages via OS package manager
+[packages.debian]
+apt = [
+  "zsh",
+  "curl",
+  "ca-certificates",
+  "git",
+  "rsync",
+  "wget",
+  "nmap",
+  "tree",
+  "btop",
+  "eza",
+  "zoxide",
+  "llvm",
+  "unzip",
+  "xz-utils",
+  "neofetch",
+  "magic-wormhole",
+  "zsh-autosuggestions",
+  "zsh-syntax-highlighting"
+]
+
+[packages.macos]
+brew = [
+  "zsh",
+  "curl",
+  "git",
+  "rsync",
+  "wget",
+  "nmap",
+  "tree",
+  "btop",
+  "eza",
+  "zoxide",
+  "llvm",
+  "fastfetch",
+  "magic-wormhole",
+  "zsh-autosuggestions",
+  "zsh-syntax-highlighting"
+]
+casks = [
+  "ghostty",
+  "zed",
+  "font-iosevka",
+  "font-meslo-lg-nerd-font"
+]

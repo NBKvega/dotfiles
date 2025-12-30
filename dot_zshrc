@@ -1,0 +1,64 @@
+# ~/.zshrc
+
+# ===== PATH =====
+# Keep user-local bins first
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
+
+# ===== Editor =====
+if command -v hx >/dev/null 2>&1; then
+  export EDITOR=hx
+fi
+
+# ===== Modernes ls: eza =====
+if command -v eza >/dev/null 2>&1; then
+  alias ls='eza --color=always --icons'
+  alias ll='eza -l --color=always --icons'
+  alias la='eza -la --color=always --icons'
+  alias lt='eza -T --color=always --icons'
+fi
+
+# ===== Starship Prompt =====
+# Only if starship exists and we have a real terminal
+if command -v starship >/dev/null 2>&1 && [[ "${TERM:-}" != "dumb" ]]; then
+  eval "$(starship init zsh)"
+fi
+
+# ===== History Settings =====
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE="$HOME/.zsh_history"
+setopt HIST_IGNORE_DUPS
+setopt SHARE_HISTORY
+
+# ===== Helix runtime =====
+# Only set if helix config dir exists (optional)
+if [ -d "$HOME/.config/helix" ]; then
+  export HELIX_RUNTIME="$HOME/.config/helix/runtime"
+fi
+
+# ===== Autosuggestions =====
+# Debian apt path
+if [ -f /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh ]; then
+  source /usr/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+fi
+# Homebrew path (macOS)
+if command -v brew >/dev/null 2>&1; then
+  BREW_PREFIX="$(brew --prefix 2>/dev/null)"
+  if [ -f "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh" ]; then
+    source "${BREW_PREFIX}/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  fi
+fi
+
+# ===== Syntax Highlighting (immer am Ende!) =====
+# Debian apt path
+if [ -f /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]; then
+  source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+# Homebrew path (macOS)
+if command -v brew >/dev/null 2>&1; then
+  BREW_PREFIX="$(brew --prefix 2>/dev/null)"
+  if [ -f "${BREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh" ]; then
+    source "${BREW_PREFIX}/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  fi
+fi

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+OS="{{ .chezmoi.os }}"
+
+if [ "$OS" = "linux" ]; then
+  # Debian/RaspiOS base packages
+  if command -v apt-get >/dev/null 2>&1; then
+    sudo apt-get update -y
+    sudo apt-get install -y {{- range $i, $p := (index . "packages" "debian" "apt") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
+  else
+    echo "ERROR: apt-get not found; expected Debian/RaspiOS." >&2
+    exit 1
+  fi
+elif [ "$OS" = "darwin" ]; then
+  # Homebrew install (if missing)
+  if ! command -v brew >/dev/null 2>&1; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    # Ensure brew is available in current shell session (Apple Silicon path)
+    if [ -x /opt/homebrew/bin/brew ]; then
+      eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [ -x /usr/local/bin/brew ]; then
+      eval "$(/usr/local/bin/brew shellenv)"
+    fi
+  fi
+
+  brew update
+  brew install {{- range $i, $p := (index . "packages" "macos" "brew") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
+  brew install --cask {{- range $i, $p := (index . "packages" "macos" "casks") -}}{{ if $i }} {{ end }}{{ $p }}{{- end -}}
+else
+  echo "ERROR: Unsupported OS: $OS" >&2
+  exit 1
+fi
+
+# Ensure user-local bin exists
+mkdir -p "$HOME/.local/bin"
