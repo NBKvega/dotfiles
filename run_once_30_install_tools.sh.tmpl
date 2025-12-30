@@ -70,15 +70,27 @@ if [[ "$OS" == "Linux" ]]; then
     "starship" \
     "starship"
 
-# Typst (tag "vX.Y.Z", asset name has NO version)
-TYPST_VER="$(get_toml_version typst)"
-install_github_release \
-  "typst/typst" \
-  "v${TYPST_VER}" \
-  "typst-${ARCH_GNU}-unknown-linux-musl.tar.xz" \
-  "typst/typst" \
-  "typst"
+  # Typst (tag "vX.Y.Z", asset name has NO version in filename)
+  TYPST_VER="$(get_toml_version typst)"
+  url="https://github.com/typst/typst/releases/download/v${TYPST_VER}/typst-${ARCH_GNU}-unknown-linux-musl.tar.xz"
 
+  tmpdir="$(mktemp -d)"
+  trap 'rm -rf "$tmpdir"' RETURN
+
+  echo "Downloading: $url"
+  curl -fsSL "$url" -o "$tmpdir/pkg"
+  tar -xf "$tmpdir/pkg" -C "$tmpdir"
+
+  # Find typst binary inside the extracted tree (robust against archive layout changes)
+  TYPST_BIN="$(find "$tmpdir" -type f -name typst -perm -111 | head -n 1)"
+  if [[ -z "${TYPST_BIN}" ]]; then
+    echo "ERROR: typst binary not found in extracted archive."
+    find "$tmpdir" -maxdepth 3 -type f | sed 's|^|  |'
+    exit 1
+  fi
+
+  install -m 0755 "$TYPST_BIN" "$HOME/.local/bin/typst"
+  
   # Fonts (user-local): MesloLGS Nerd Font
   NERD_VER="$(get_toml_version nerd_fonts)"
   FONT_DIR="$HOME/.local/share/fonts"
