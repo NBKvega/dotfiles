@@ -70,14 +70,14 @@ if [[ "$OS" == "Linux" ]]; then
     "starship" \
     "starship"
 
-  # Typst (tag "vX.Y.Z")
-  TYPST_VER="$(get_toml_version typst)"
-  install_github_release \
-    "typst/typst" \
-    "v${TYPST_VER}" \
-    "typst-${TYPST_VER}-${ARCH_GNU}-unknown-linux-musl.tar.xz" \
-    "typst-${TYPST_VER}-${ARCH_GNU}-unknown-linux-musl/typst" \
-    "typst"
+# Typst (tag "vX.Y.Z", asset name has NO version)
+TYPST_VER="$(get_toml_version typst)"
+install_github_release \
+  "typst/typst" \
+  "v${TYPST_VER}" \
+  "typst-${ARCH_GNU}-unknown-linux-musl.tar.xz" \
+  "typst/typst" \
+  "typst"
 
   # Fonts (user-local): MesloLGS Nerd Font
   NERD_VER="$(get_toml_version nerd_fonts)"
