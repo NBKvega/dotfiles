@@ -1,0 +1,24 @@
+[[language]]
+name = "rust"
+language-servers = ["rust-analyzer"]
+auto-format = true
+formatter = { command = "rustfmt", args = ["--edition", "2021" ]}
+
+[language-server.rust-analyzer]
+command = "rust-analyzer"
+
+[language-server.rust-analyzer.config.inlayHints]
+bindingModeHints = { enable = true }
+typeHints = { enable = true }
+parameterHints = { enable = true }
+
+[[language]]
+name = "nix"
+language-servers = ["nixd"]
+scope = "source.nix"
+formatter = { command = "alejandra", args = ["-"] }
+auto-format = true
+
+[language-server.nixd]
+command = "nixd"
+

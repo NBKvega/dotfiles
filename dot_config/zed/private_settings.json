@@ -1,0 +1,174 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "ssh_connections": [
+    {
+      "host": "uek-1",
+      "projects": [
+        {
+          "paths": [
+            "/"
+          ]
+        },
+        {
+          "paths": [
+            "/home"
+          ]
+        },
+        {
+          "paths": [
+            "~/lmz"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "avconsult",
+      "projects": [
+        {
+          "paths": [
+            "/home/python"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "uekwebserver1",
+      "projects": [
+        {
+          "paths": [
+            "/"
+          ]
+        },
+        {
+          "paths": [
+            "/home/sven"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "uekwebserver2",
+      "projects": []
+    },
+    {
+      "host": "192.168.178.168",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/"
+          ]
+        },
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.170",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.171",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.172",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.173",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.174",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "192.168.178.169",
+      "username": "admin",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    },
+    {
+      "host": "uek001",
+      "projects": [
+        {
+          "paths": [
+            "/home/admin"
+          ]
+        }
+      ]
+    }
+  ],
+  "features": {
+    "edit_prediction_provider": "zed"
+  },
+  "agent": {
+    "default_model": {
+      "provider": "openai",
+      "model": "gpt-4o-mini"
+    },
+    "version": "2"
+  },
+  "telemetry": {
+    "metrics": false
+  },
+  "ui_font_size": 16,
+  "buffer_font_size": 17.0,
+  "buffer_font_family": "MesloLGL Nerd Font",
+  "theme": {
+    "mode": "system",
+    "light": "Tokyo Night",
+    "dark": "Tokyo Night"
+  }
+}

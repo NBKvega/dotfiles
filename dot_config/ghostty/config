@@ -1,0 +1,53 @@
+#[keyboard]
+macos-option-as-alt = "left"
+keybind = alt+left=unbind
+keybind = alt+right=unbind
+
+#[Background]
+background-opacity = 0.9
+background-blur = true
+#background = "#000000"
+
+#[Theme]
+theme = tokyonight
+
+#[Shell-integration for remote hosts]
+shell-integration-features = ssh-terminfo,ssh-env
+
+#[Font]
+font-family = Iosevka Nerd Font Mono
+font-size = 13
+font-feature = liga
+
+#[shaders]
+#!!! doesnt work !!!!   custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/aurora.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/animated-gradient-shader.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/bettercrt.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/bloom.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/cineShader-Lava.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/crt.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/cubes.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/dither.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/drunkard.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/fireworks-rockets.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/fireworks.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/galaxy.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/gears-and-belts.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/glitchy.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/glow-rgbsplit-twitchy.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/gradient-background.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/in-game-crt.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/inside-the-matrix.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/just-snow.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/matrix-hallway.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/negative.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/retro-terminal.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/sin-interference.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/smoke-and-ghost.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/sparks-from-fire.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/spotlight.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/starfield-colors.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/starfield.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/tft.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/underwater.glsl"
+#custom-shader = "/Users/sven/.config/ghostty/ghostty-shaders/water.glsl"

@@ -1,0 +1,7 @@
+theme = "base16_transparent"
+
+[editor.lsp]
+display-inlay-hints = true
+
+[editor.file-picker]
+hidden = false
