@@ -1,2 +1,2 @@
 # dotfiles
-chesmoi dotfiles
+chez moi dotfiles
