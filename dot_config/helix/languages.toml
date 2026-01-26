@@ -22,3 +22,8 @@ auto-format = true
 [language-server.nixd]
 command = "nixd"
 
+[[language]]
+name = "typst"
+language-servers = ["tinymist"]
+formatter = { command = "tinymist", args = ["format", "-"] }
+auto-format = true

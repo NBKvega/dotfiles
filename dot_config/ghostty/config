@@ -1,3 +1,5 @@
+term = xterm-256color
+
 #[keyboard]
 macos-option-as-alt = "left"
 keybind = alt+left=unbind
@@ -12,7 +14,7 @@ background-blur = true
 theme = tokyonight
 
 #[Shell-integration for remote hosts]
-shell-integration-features = ssh-terminfo,ssh-env
+#shell-integration-features = ssh-terminfo,ssh-env
 
 #[Font]
 font-family = Iosevka Nerd Font Mono
