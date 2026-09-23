@@ -22,8 +22,15 @@ auto-format = true
 [language-server.nixd]
 command = "nixd"
 
+[language-server.tinymist.config]
+formatterMode = "typstyle"
+exportPdf = "onSave"
+
+# Live-Vorschau im Browser (Background-Preview laut Tinymist-Doku)
+preview.background.enabled = true
+preview.background.args = ["--data-plane-host=127.0.0.1:23635", "--invert-colors=never", "--open"]
+
 [[language]]
 name = "typst"
 language-servers = ["tinymist"]
-formatter = { command = "tinymist", args = ["format", "-"] }
 auto-format = true
